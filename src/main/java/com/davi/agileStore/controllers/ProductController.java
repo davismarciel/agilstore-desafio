@@ -27,6 +27,13 @@ public class ProductController {
         return ResponseEntity.ok().body(product);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> findById(@Valid @PathVariable UUID id) {
+        var product = service.findById(id);
+
+        return ResponseEntity.ok().body(product);
+    }
+
     @PostMapping
     public ResponseEntity<Product> insert(@Valid @RequestBody Product obj) {
         var product = service.insert(obj);
