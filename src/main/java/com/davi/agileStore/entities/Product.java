@@ -1,6 +1,10 @@
 package com.davi.agileStore.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -13,11 +17,20 @@ public class Product {
     @Id
     @GeneratedValue(generator = "UUID", strategy = GenerationType.AUTO)
     private UUID id;
-    private String name;
-    private Double price;
-    private Integer stock;
-    private String description;
 
+    @NotNull(message = "Name cannot be empty")
+    @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
+    private String name;
+
+    @NotNull(message = "Price cannot be null")
+    @Positive(message = "Price must be greater than zero")
+    private Double price;
+
+    @NotNull(message = "Stock cannot be empty")
+    private Integer stock;
+
+    @NotBlank(message = "Description cannot be empty")
+    private String description;
 
     public Product() {
     }
@@ -29,7 +42,6 @@ public class Product {
         this.stock = stock;
         this.description = description;
     }
-
 
     @ManyToMany
     @JoinTable(name = "tb_product_category",
