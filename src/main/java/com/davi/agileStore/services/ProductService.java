@@ -1,7 +1,9 @@
 package com.davi.agileStore.services;
 
 import com.davi.agileStore.dto.ProductDTO;
+import com.davi.agileStore.entities.Category;
 import com.davi.agileStore.entities.Product;
+import com.davi.agileStore.repositories.CategoryRepository;
 import com.davi.agileStore.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,27 @@ public class ProductService {
     @Autowired
     private ProductRepository repository;
 
-    public Product insert(Product product) {
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+
+    public Product insert(ProductDTO dto) {
+        Product product = new Product();
+        product.setName(dto.name());
+        product.setPrice(dto.price());
+        product.setStock(dto.stock());
+        product.setDescription(dto.description());
+
+        if (dto.categories() != null && !dto.categories().isEmpty()) {
+            List<Category> categories = categoryRepository.findCategoryByName(dto.categories());
+
+            if (categories.size() != dto.categories().size()) {
+                throw new RuntimeException("Category not found");
+            }
+
+            product.getCategories().addAll(categories);
+        }
+
         return repository.save(product);
     }
 

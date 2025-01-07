@@ -1,6 +1,8 @@
 package com.davi.agileStore.dto;
 
-import com.davi.agileStore.entities.Category;
+import java.util.List;
 
-public record ProductDTO(String name, Double price, Integer stock, String description, Category category) {
+public record ProductDTO(
+        String name, Double price, Integer stock, String description, List<String> categories
+) {
 }
