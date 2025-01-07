@@ -6,14 +6,12 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
+@RestController
+@RequestMapping(value = "/categories")
 public class CategoryController {
 
     @Autowired
@@ -26,19 +24,19 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Category> findById(@Valid @PathVariable UUID id) {
+    public ResponseEntity<Category> findById(@Valid @PathVariable Long id) {
         var cat = service.findById(id);
         return ResponseEntity.ok().body(cat);
     }
 
     @PostMapping
-    public ResponseEntity<Category> insert(Category obj) {
+    public ResponseEntity<Category> insert(@Valid @RequestBody Category obj) {
         var cat = service.insert(obj);
         return ResponseEntity.status(HttpStatus.CREATED).body(cat);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Category> update(@Valid @PathVariable UUID id, Category obj) {
+    public ResponseEntity<Category> update(@Valid @PathVariable Long id, Category obj) {
         var cat = service.update(id, obj);
         return ResponseEntity.ok().body(cat);
     }

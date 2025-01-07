@@ -2,18 +2,20 @@ package com.davi.agileStore.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "tb_category")
 public class Category {
     @Id
-    @GeneratedValue(generator = "UUID", strategy = GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank(message = "Name cannot be empty")
     private String name;
 
     @ManyToMany(mappedBy = "categories")
@@ -24,12 +26,12 @@ public class Category {
     public Category() {
     }
 
-    public Category(UUID id, String name) {
+    public Category(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
