@@ -3,6 +3,7 @@ package com.davi.agileStore.services;
 import com.davi.agileStore.dto.ProductDTO;
 import com.davi.agileStore.entities.Category;
 import com.davi.agileStore.entities.Product;
+import com.davi.agileStore.exceptions.domains.ResourceNotFoundException;
 import com.davi.agileStore.repositories.CategoryRepository;
 import com.davi.agileStore.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class ProductService {
             List<Category> categories = categoryRepository.findCategoryByName(dto.categories());
 
             if (categories.size() != dto.categories().size()) {
-                throw new RuntimeException("Category not found");
+                throw new ResourceNotFoundException("Category not found");
             }
 
             product.getCategories().addAll(categories);
@@ -47,25 +48,21 @@ public class ProductService {
 
     public Product findById(UUID id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found."));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found."));
     }
 
     public Product update(UUID id, ProductDTO obj) {
-        try {
-            Product entity = repository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Product not found."));
+        Product entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found."));
 
-            updateData(entity, obj);
+        updateData(entity, obj);
 
-            return repository.save(entity);
-        } catch (RuntimeException e) {
-            throw new RuntimeException("There was an error while trying to update the product.");
-        }
+        return repository.save(entity);
     }
 
     public void delete(UUID id) {
         if (!repository.existsById(id)) {
-            throw new RuntimeException("Product not found.");
+            throw new ResourceNotFoundException("Product not found.");
         }
         repository.deleteById(id);
     }

@@ -15,7 +15,6 @@ public class CategoryService {
 
     public Category insert(Category category) {
         return repository.save(category);
-
     }
 
     public List<Category> index() {
@@ -28,21 +27,18 @@ public class CategoryService {
     }
 
     public Category update(Long id, Category category) {
-        try {
-            var entity = repository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Category not found"));
 
-            entity.setName(category.getName());
+        var entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
-            return repository.save(entity);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        }
+        entity.setName(category.getName());
+
+        return repository.save(entity);
     }
 
     public void delete(Long id) {
         if (!repository.existsById(id)) {
-            throw new RuntimeException("Category not found.");
+            throw new ResourceNotFoundException("Category not found.");
         }
         repository.deleteById(id);
     }
