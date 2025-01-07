@@ -1,5 +1,6 @@
 package com.davi.agileStore.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -12,11 +13,16 @@ import java.util.UUID;
 public class Category {
     @Id
     @GeneratedValue(generator = "UUID", strategy = GenerationType.AUTO)
-    private final UUID id;
+    private UUID id;
     private String name;
 
     @ManyToMany(mappedBy = "categories")
+    @JsonIgnore
     private final Set<Product> products = new HashSet<>();
+
+
+    public Category() {
+    }
 
     public Category(UUID id, String name) {
         this.id = id;

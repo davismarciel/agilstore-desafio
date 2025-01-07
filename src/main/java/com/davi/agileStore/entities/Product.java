@@ -18,12 +18,18 @@ public class Product {
     private Integer stock;
     private String description;
 
-    public Product(String name, Double price, Integer stock, String description) {
+
+    public Product() {
+    }
+
+    public Product(UUID id, String name, Double price, Integer stock, String description) {
+        this.id = id;
         this.name = name;
         this.price = price;
         this.stock = stock;
         this.description = description;
     }
+
 
     @ManyToMany
     @JoinTable(name = "tb_product_category",
