@@ -1,6 +1,7 @@
 package com.davi.agileStore.services;
 
 import com.davi.agileStore.entities.Category;
+import com.davi.agileStore.exceptions.domains.ResourceNotFoundException;
 import com.davi.agileStore.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ public class CategoryService {
 
     public Category insert(Category category) {
         return repository.save(category);
+
     }
 
     public List<Category> index() {
@@ -22,7 +24,7 @@ public class CategoryService {
 
     public Category findById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found."));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
     }
 
     public Category update(Long id, Category category) {

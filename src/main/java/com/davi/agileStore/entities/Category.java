@@ -3,6 +3,7 @@ package com.davi.agileStore.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -16,6 +17,7 @@ public class Category {
     private Long id;
 
     @NotBlank(message = "Name cannot be empty")
+    @Size(min = 4, message = "Name must be at least 3 characters long")
     private String name;
 
     @ManyToMany(mappedBy = "categories")
