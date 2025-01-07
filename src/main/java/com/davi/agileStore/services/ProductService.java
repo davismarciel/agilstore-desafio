@@ -30,15 +30,7 @@ public class ProductService {
         product.setStock(dto.stock());
         product.setDescription(dto.description());
 
-        if (dto.categories() != null && !dto.categories().isEmpty()) {
-            List<Category> categories = categoryRepository.findCategoryByName(dto.categories());
-
-            if (categories.size() != dto.categories().size()) {
-                throw new ResourceNotFoundException("Category not found");
-            }
-
-            product.getCategories().addAll(categories);
-        }
+        setProductCategories(dto, product);
 
         return repository.save(product);
     }
@@ -60,6 +52,7 @@ public class ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found."));
 
         updateData(entity, obj);
+        setProductCategories(obj, entity);
 
         return repository.save(entity);
     }
@@ -78,4 +71,18 @@ public class ProductService {
         entity.setPrice(obj.price());
         entity.setStock(obj.stock());
     }
+
+    private void setProductCategories(ProductDTO dto, Product product) {
+        if (dto.categories() != null && !dto.categories().isEmpty()) {
+            List<Category> categories = categoryRepository.findCategoryByName(dto.categories());
+
+            if (categories.size() != dto.categories().size()) {
+                throw new ResourceNotFoundException("Category not found");
+            }
+
+            product.getCategories().clear();
+            product.getCategories().addAll(categories);
+        }
+    }
+
 }
