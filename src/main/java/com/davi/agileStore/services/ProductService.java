@@ -6,6 +6,7 @@ import com.davi.agileStore.entities.Product;
 import com.davi.agileStore.exceptions.domains.ResourceNotFoundException;
 import com.davi.agileStore.repositories.CategoryRepository;
 import com.davi.agileStore.repositories.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,7 @@ public class ProductService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-
+    @Transactional
     public Product insert(ProductDTO dto) {
         Product product = new Product();
         product.setName(dto.name());
@@ -42,15 +43,18 @@ public class ProductService {
         return repository.save(product);
     }
 
+    @Transactional
     public List<Product> index() {
         return repository.findAll();
     }
 
+    @Transactional
     public Product findById(UUID id) {
         return repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found."));
     }
 
+    @Transactional
     public Product update(UUID id, ProductDTO obj) {
         Product entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found."));
@@ -60,6 +64,7 @@ public class ProductService {
         return repository.save(entity);
     }
 
+    @Transactional
     public void delete(UUID id) {
         if (!repository.existsById(id)) {
             throw new ResourceNotFoundException("Product not found.");

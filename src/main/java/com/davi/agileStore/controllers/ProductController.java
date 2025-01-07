@@ -34,7 +34,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> insert(@Valid @RequestBody ProductDTO obj) {
+    public ResponseEntity<Product> insert(@RequestBody @Valid ProductDTO obj) {
         var product = service.insert(obj);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
