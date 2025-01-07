@@ -4,6 +4,8 @@ import com.davi.agileStore.exceptions.domains.ResourceNotFoundException;
 import com.davi.agileStore.exceptions.standard.StandardErrorMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -60,4 +62,22 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
 
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<StandardErrorMessage> handleConstraintViolation(ConstraintViolationException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        List<String> errors = e.getConstraintViolations()
+                .stream()
+                .map(ConstraintViolation::getMessage)
+                .toList();
+
+        StandardErrorMessage err = new StandardErrorMessage();
+        err.setTimestamp(Instant.now());
+        err.setStatus(status.value());
+        err.setMessage("Validation error");
+        err.setErrors(errors);
+        err.setPath(request.getRequestURI());
+
+        return ResponseEntity.status(status).body(err);
+    }
 }
