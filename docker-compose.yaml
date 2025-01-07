@@ -11,6 +11,9 @@ services:
     volumes:
       - ./data/db:/var/lib/postgresql/data
   app:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: agile-store
     container_name: agile-app
     ports:
