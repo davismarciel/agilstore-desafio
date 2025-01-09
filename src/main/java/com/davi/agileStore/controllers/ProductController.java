@@ -19,11 +19,23 @@ public class ProductController {
     @Autowired
     private ProductService service;
 
-    @GetMapping
-    public ResponseEntity<List<Product>> index() {
-        var product = service.index();
+//    @GetMapping
+//    public ResponseEntity<List<Product>> index() {
+//        var product = service.index();
+//
+//        return ResponseEntity.ok().body(product);
+//    }
 
-        return ResponseEntity.ok().body(product);
+    @GetMapping
+    public ResponseEntity<List<Product>> findBySpecification(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Double price,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String category) {
+
+
+        List<Product> products = service.findProductsBySpecification(name, price, category, sort);
+        return ResponseEntity.ok(products);
     }
 
     @GetMapping("/{id}")

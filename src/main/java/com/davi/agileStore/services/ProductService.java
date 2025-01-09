@@ -6,8 +6,11 @@ import com.davi.agileStore.entities.Product;
 import com.davi.agileStore.exceptions.domains.ResourceNotFoundException;
 import com.davi.agileStore.repositories.CategoryRepository;
 import com.davi.agileStore.repositories.ProductRepository;
+import com.davi.agileStore.util.SpecificationUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -63,6 +66,18 @@ public class ProductService {
             throw new ResourceNotFoundException("Product not found.");
         }
         repository.deleteById(id);
+    }
+
+    public List<Product> findProductsBySpecification(String name, Double price, String category, String sort) {
+        Specification<Product> spec = Specification.where(SpecificationUtil.hasName(name))
+                .and(SpecificationUtil.hasCategory(category).and(SpecificationUtil.hasPrice(price)));
+
+        if (sort != null) {
+            Sort sorting = Sort.by(sort.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, "name");
+            return repository.findAll(spec, sorting);
+        }
+
+        return repository.findAll(spec);
     }
 
     private void updateData(Product entity, ProductDTO obj) {

@@ -31,9 +31,9 @@ public class TestConfig implements CommandLineRunner {
         categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4));
 
         Product p1 = new Product(null, "Celular", 200.0, 2, "Lorem ipsur");
-        Product p2 = new Product(null, "Pipoca", 200.0, 2, "Lorem ipsur");
-        Product p3 = new Product(null, "PC Gamer", 200.0, 3, "Lorem ipsur");
-        Product p4 = new Product(null, "Geladeira", 200.0, 4, "Lorem ipsur");
+        Product p2 = new Product(null, "Pipoca", 300.0, 2, "Lorem ipsur");
+        Product p3 = new Product(null, "PC Gamer", 250.0, 3, "Lorem ipsur");
+        Product p4 = new Product(null, "Geladeira", 700.0, 4, "Lorem ipsur");
 
         p1.getCategories().add(cat1);
         p2.getCategories().add(cat4);
