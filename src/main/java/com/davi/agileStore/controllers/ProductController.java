@@ -19,15 +19,8 @@ public class ProductController {
     @Autowired
     private ProductService service;
 
-//    @GetMapping
-//    public ResponseEntity<List<Product>> index() {
-//        var product = service.index();
-//
-//        return ResponseEntity.ok().body(product);
-//    }
-
     @GetMapping
-    public ResponseEntity<List<Product>> findBySpecification(
+    public ResponseEntity<List<Product>> index(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Double price,
             @RequestParam(required = false) String sort,

@@ -21,10 +21,8 @@ public class SpecificationUtil {
                 return null;
             }
 
-            // Join with categories
             Join<Object, Object> categories = root.join("categories");
 
-            // Filter by category name (ignoring case)
             return criteriaBuilder.equal(criteriaBuilder.lower(categories.get("name")), category.toLowerCase());
         };
     }
